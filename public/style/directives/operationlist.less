@@ -1,20 +1,22 @@
 operationlist {
+	display: inline-block;
 	height: 75px;
-	overflow: hidden;
 	color: #b7b9b9;
+	position: relative;
+	top: 340px;
 
 	&:hover {
-		overflow: visible;
+		ul {
+			li {
+				opacity: 1;
+			}
+		}
 	}
 
 	ul {
 		padding: 0;
 		list-style-type: none;
 		position: relative;
-
-		&.active {
-			color: #8c8e8e;
-		}
 
 		&.add {
 			top: -0;
@@ -36,6 +38,12 @@ operationlist {
 			height: 75px;
 			width: 75px;
 			cursor: pointer;
+			opacity: 0;
+
+			&.active {
+				color: #8c8e8e;
+				opacity: 1;
+			}
 
 			&:after {
 				width: 100%;

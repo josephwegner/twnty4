@@ -1,7 +1,7 @@
 var app = angular.module('Twnty4App', []);
 
 
-app.controller('Twnty4Ctrl', function($scope, $http, $routeParams) {
+app.controller('Twnty4Ctrl', function($scope, $http) {
 	//This is a controller!
 });
 app.directive("operationlist", function() {

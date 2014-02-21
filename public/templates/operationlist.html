@@ -1,6 +1,6 @@
 <ul class="operation-list {{operation}}">
-	<li class="add" ng-click="clicked('add')"></li>
-	<li class="subtract" ng-click="clicked('subtract')"></li>
-	<li class="multiply" ng-click="clicked('multiply')"></li>
-	<li class="divide" ng-click="clicked('divide')"></li>
+	<li class="add" ng-class="{active: operation == 'add'}" ng-click="clicked('add')"></li>
+	<li class="subtract" ng-class="{active: operation == 'subtract'}" ng-click="clicked('subtract')"></li>
+	<li class="multiply" ng-class="{active: operation == 'multiply'}" ng-click="clicked('multiply')"></li>
+	<li class="divide" ng-class="{active: operation == 'divide'}" ng-click="clicked('divide')"></li>
 </ul>

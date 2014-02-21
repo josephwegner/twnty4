@@ -1,18 +1,17 @@
 operationlist {
+  display: inline-block;
   height: 75px;
-  overflow: hidden;
   color: #b7b9b9;
+  position: relative;
+  top: 340px;
 }
-operationlist:hover {
-  overflow: visible;
+operationlist:hover ul li {
+  opacity: 1;
 }
 operationlist ul {
   padding: 0;
   list-style-type: none;
   position: relative;
-}
-operationlist ul.active {
-  color: #8c8e8e;
 }
 operationlist ul.add {
   top: 0;
@@ -30,6 +29,11 @@ operationlist ul li {
   height: 75px;
   width: 75px;
   cursor: pointer;
+  opacity: 0;
+}
+operationlist ul li.active {
+  color: #8c8e8e;
+  opacity: 1;
 }
 operationlist ul li:after {
   width: 100%;
@@ -60,15 +64,30 @@ body {
   background-color: grey;
 }
 #equation {
-  width: 960px;
+  width: 1170px;
   margin: auto;
   font-size: 75px;
+  text-align: center;
+  height: 500px;
 }
 #equation ul#pieces {
   list-style-type: none;
   padding: 0;
+  margin: 0;
+  height: 100%;
 }
-#equation ul#pieces > li,
-#equation ul#pieces operationlist {
-  float: left;
+#equation ul#pieces > li {
+  display: inline-block;
+  margin: 0 20px;
+  top: 100px;
+  position: relative;
+  box-sizing: border-box;
+  padding-top: 50px;
+}
+#equation ul#pieces > li.number {
+  height: 200px;
+  width: 125px;
+  border-radius: 7px;
+  border: 2px solid #8c8e8e;
+  color: #8c8e8e;
 }

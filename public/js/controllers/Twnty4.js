@@ -1,3 +1,3 @@
-app.controller('Twnty4Ctrl', function($scope, $http, $routeParams) {
+app.controller('Twnty4Ctrl', function($scope, $http) {
 	//This is a controller!
 });
