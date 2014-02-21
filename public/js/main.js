@@ -1,2 +1,2 @@
-var app = angular.module('BoilerApp', []);
+var app = angular.module('Twnty4App', []);
 

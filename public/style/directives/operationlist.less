@@ -1,0 +1,72 @@
+operationlist {
+	height: 75px;
+	overflow: hidden;
+	color: #b7b9b9;
+
+	&:hover {
+		overflow: visible;
+	}
+
+	ul {
+		padding: 0;
+		list-style-type: none;
+		position: relative;
+
+		&.active {
+			color: #8c8e8e;
+		}
+
+		&.add {
+			top: -0;
+		}
+
+		&.subtract {
+			top: -75px;
+		}
+
+		&.multiply {
+			top: -155px;
+		}
+
+		&.divide {
+			top: -235px;
+		}
+
+		li {
+			height: 75px;
+			width: 75px;
+			cursor: pointer;
+
+			&:after {
+				width: 100%;
+				display: block;
+				text-align: center;
+				line-height: 75px;
+			}
+
+			&.add {
+				&:after {
+					content: "\FF0B";
+				}
+			}
+
+			&.subtract {
+				&:after {
+					content: "\2212";
+				}
+			}
+
+			&.multiply {
+				&:after {
+					content: "\00D7";
+				}
+			}
+
+			&.divide {
+				&:after {
+					content: "\00F7";
+				}
+			}
+		}
+	}
+}

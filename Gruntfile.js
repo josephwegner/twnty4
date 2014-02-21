@@ -14,7 +14,7 @@ module.exports = function(grunt) {
         less: {
             development: {
                 files: {
-                    "public/style/style.css": "public/style/style.less"
+                    "public/style/style.css": "public/style/**/*.less"
                 }
             }
         },
@@ -30,9 +30,10 @@ module.exports = function(grunt) {
                     livereload: true
                 },
                 files: [
-                    'public/style/**/*.less'
+                    'public/style/**/*.less',
+                    'public/js/**/*.js'
                 ],
-                tasks: ['less'],
+                tasks: ['less', 'concat'],
             }
         }
     });
