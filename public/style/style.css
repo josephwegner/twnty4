@@ -1,9 +1,64 @@
+card {
+  display: inline-block;
+  margin: 0 20px;
+  position: relative;
+  box-sizing: border-box;
+  padding-top: 50px;
+  height: 200px;
+  width: 125px;
+  border-radius: 7px;
+  border: 2px solid #8c8e8e;
+  color: #b7b9b9;
+}
+card:hover ul li {
+  opacity: 1;
+}
+card ul {
+  padding: 0;
+  list-style-type: none;
+  position: relative;
+}
+card ul.selected0 li {
+  top: 10px;
+}
+card ul.selected1 li {
+  top: -65px;
+}
+card ul.selected2 li {
+  top: -140px;
+}
+card ul.selected3 li {
+  top: -215px;
+}
+card ul.selected4 li {
+  top: -285px;
+}
+card ul li {
+  cursor: pointer;
+  opacity: 0;
+  line-height: 0;
+  position: relative;
+}
+card ul li.active {
+  color: #8c8e8e;
+  opacity: 1;
+}
+card ul li:after {
+  width: 100%;
+  display: block;
+  text-align: center;
+  line-height: 75px;
+}
+card ul li span {
+  line-height: 75px;
+}
+
 operationlist {
   display: inline-block;
   height: 75px;
   color: #b7b9b9;
   position: relative;
-  top: 340px;
+  top: -60px;
 }
 operationlist:hover ul li {
   opacity: 1;
@@ -17,10 +72,10 @@ operationlist ul.add {
   top: 0;
 }
 operationlist ul.subtract {
-  top: -75px;
+  top: -80px;
 }
 operationlist ul.multiply {
-  top: -155px;
+  top: -160px;
 }
 operationlist ul.divide {
   top: -235px;
@@ -68,26 +123,11 @@ body {
   margin: auto;
   font-size: 75px;
   text-align: center;
-  height: 500px;
+  margin-top: 100px;
 }
 #equation ul#pieces {
   list-style-type: none;
   padding: 0;
   margin: 0;
   height: 100%;
-}
-#equation ul#pieces > li {
-  display: inline-block;
-  margin: 0 20px;
-  top: 100px;
-  position: relative;
-  box-sizing: border-box;
-  padding-top: 50px;
-}
-#equation ul#pieces > li.number {
-  height: 200px;
-  width: 125px;
-  border-radius: 7px;
-  border: 2px solid #8c8e8e;
-  color: #8c8e8e;
 }

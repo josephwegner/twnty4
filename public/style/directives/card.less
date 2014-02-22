@@ -1,0 +1,78 @@
+card {
+	display: inline-block;
+	margin: 0 20px;
+	position: relative;
+	box-sizing: border-box;
+	padding-top: 50px;
+	height: 200px;
+	width: 125px;
+	border-radius: 7px;
+	border: 2px solid #8c8e8e;
+	color: #b7b9b9;
+
+	&:hover {
+		ul {
+			li {
+				opacity: 1;
+			}
+		}
+	}
+
+	ul {
+		padding: 0;
+		list-style-type: none;
+		position: relative;
+
+		&.selected0 {
+			li {
+				top: 10px;
+			}
+		}
+
+		&.selected1 {
+			li {
+				top: -65px;
+			}
+		}
+
+		&.selected2 {
+			li {
+				top: -140px;
+			}
+		}
+
+		&.selected3 {
+			li {
+				top: -215px;
+			}
+		}
+
+		&.selected4 {
+			li {
+				top: -285px;
+			}
+		}
+
+		li {
+			cursor: pointer;
+			opacity: 0;
+			line-height: 0;
+			position: relative;
+			&.active {
+				color: #8c8e8e;
+				opacity: 1;
+			}
+
+			&:after {
+				width: 100%;
+				display: block;
+				text-align: center;
+				line-height: 75px;
+			}
+
+			span {
+				line-height: 75px;
+			}
+		}
+	}
+}
