@@ -11,13 +11,14 @@
 	</div>
 	<div id="equation">
 		<ul id="pieces">
-			<card options="[1,2,3,4]" selection="1"></card>
-			<operationlist></operationList>
-			<card options="[1,2,3,4]" selection="2"></card>
-			<operationlist></operationList>
-			<card options="[1,2,3,4]" selection="3"></card>
-			<operationlist></operationList>
-			<card options="[1,2,3,4]" selection="4"></card>
+			<card options="options" selection="selections[0]"></card>
+			<operationlist operation="operations[0]"></operationList>
+			<card options="options" selection="selections[1]"></card>
+			<operationlist operation="operations[1]"></operationList>
+			<card options="options" selection="selections[2]"></card>
+			<operationlist operation="operations[2]"></operationList>
+			<card options="options" selection="selections[3]"></card>
+			<li class="result"><span>=</span><span>{{total()}}</span></li>
 	<div id="bank">
 
 	</div>

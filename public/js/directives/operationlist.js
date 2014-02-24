@@ -3,7 +3,7 @@ app.directive("operationlist", function() {
 		restrict: 'E',
 		templateUrl: "/assets/templates/operationlist.html",
 		scope: {
-			operation: "@operation"
+			operation: "=operation"
 		},
 		link: function(scope, element, attrs) {
 

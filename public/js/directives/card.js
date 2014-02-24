@@ -4,7 +4,7 @@ app.directive("card", function() {
 		templateUrl: "/assets/templates/card.html",
 		scope: {
 			options: "=options",
-			selection: "@selection"
+			selection: "=selection"
 		},
 		link: function(scope, element, attrs) {
 

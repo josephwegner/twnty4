@@ -131,3 +131,11 @@ body {
   margin: 0;
   height: 100%;
 }
+#equation ul#pieces li.result {
+  display: inline-block;
+  position: relative;
+  top: -290px;
+}
+#equation ul#pieces li.result span:last-child {
+  margin-left: 10px;
+}
