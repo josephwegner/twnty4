@@ -1,6 +1,6 @@
 class Game
 	constructor: (@socket) ->
-		@clients = []
+		@clients = {}
 		@numbers = @getNewNumbers()
 		console.log "Numbers are:", @numbers
 		@bindSocket()
@@ -8,13 +8,9 @@ class Game
 	bindSocket: () ->
 		@socket.on "connection", (client) =>
 			@addClient client
-			client.emit "numbers", 
-				numbers: @numbers
 
 
 	addClient: (client) ->
-		@clients.push client
-
 		client.on "solve", (data) =>
 			if data.numbers? && data.numbers.sort?
 				if !@doNumbersMatch data.numbers
@@ -30,9 +26,39 @@ class Game
 					client.emit "win",
 						numbers: @numbers
 
+					@clients[client.id].score++
+					@sendUserUpdates()
+
+
+		client.on "register", (data) =>
+			if !@clients[client.id]? && data.username?
+				@clients[client.id] =
+					username: data.username
+					score: 0
+
+			client.emit "numbers", 
+				numbers: @numbers
+
+			@sendUserUpdates(client)
+
 		client.on "getNumbers", () =>
 			client.emit "numbers" 
 				numbers: @numbers
+
+	sendUserUpdates: (client) ->
+		console.log "sending clients", @clients
+		cleanUserInfo = []
+		for id, user of @clients
+			cleanUserInfo.push 
+				username:user.username
+				score: user.score
+
+		if client
+			client.emit "users", 
+				users: cleanUserInfo
+		else
+			@socket.sockets.emit "users",
+				users: cleanUserInfo
 
 	getNewNumbers: () ->
 		numbers = "123456789".split ""

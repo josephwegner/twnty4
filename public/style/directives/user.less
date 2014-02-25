@@ -1,0 +1,33 @@
+user {
+	margin: 10px;
+	float: left;
+
+	.happy-colors(@counter) when (@counter > 0) {
+		.happy-colors((@counter - 1));
+		&:nth-child(@{counter}) {
+			span.score {
+				color: darken(@green, (100%*(@counter / 20)));
+			}
+		}
+	}
+
+
+	@green: #00f200;
+	.happy-colors(10);
+
+	span.score {
+		font-size: 36px;
+		background-color: white;
+		padding: 10px 5px;
+		border-radius: 3px;
+		display: block;
+		text-align: center;
+		margin-bottom: 3px;
+		color: black;
+	}
+
+	span.name {
+		display: block;
+		text-align: center;
+	}
+}

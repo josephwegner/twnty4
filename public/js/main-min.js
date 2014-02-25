@@ -1,8 +1,8 @@
 var app = angular.module('Twnty4App', []);
 
 
-app.controller('Twnty4Ctrl', function($scope, $http) {
-	
+app.controller('Twnty4Ctrl', function($scope) {
+
 	solving = false
 
 	socket = io.connect();
@@ -40,7 +40,32 @@ app.controller('Twnty4Ctrl', function($scope, $http) {
 		for(var i=0,max=data.messages.length; i<max; i++) {
 			alert(data.messages[i]);
 		}
-	})
+	});
+	socket.on('users', function(data) {
+		var sortedUsers = [];
+		for(var i=0, max=data.users.length; i<max; i++) {
+			var inserted = false;
+			var score = data.users[i].score
+			for(var j=0,jMax=sortedUsers.length; j<jMax; j++) {
+				if(score > sortedUsers[j].score) {
+					sortedUsers.splice(j, 0, data.users[i]);
+					inserted = true;
+					break;
+				}
+			}
+			if(!inserted) {
+				sortedUsers.push(data.users[i]);
+			}
+		}
+
+		$scope.$apply(function() {
+			$scope.users = sortedUsers;
+		})
+	});
+
+	socket.emit("register", {
+		username: "josephwegner" + Math.floor(Math.random() * 50)
+	});
 
 	$scope.resetNumbers = function(newNumbers) {
 		if(typeof(newNumbers) === "undefined") {
@@ -55,7 +80,6 @@ app.controller('Twnty4Ctrl', function($scope, $http) {
 			$scope.options[3]		
 		];
 		$scope.operations = ["add", "add", "add"];
-		console.log($scope.options);
 	}
 
 	$scope.total = function() {
@@ -203,6 +227,16 @@ app.directive("operationlist", function() {
 				scope.operation = operation;
 			}
 
+		}
+	};
+});
+app.directive("user", function() {
+	return {
+		restrict: 'E',
+		templateUrl: "/assets/templates/user.html",
+		scope: {
+			score: "@score",
+			name: "@name"
 		}
 	};
 });

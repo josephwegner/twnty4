@@ -8,7 +8,7 @@
 </head>
 <body ng-app="Twnty4App" ng-controller="Twnty4Ctrl">
 	<div id="header">
-
+		<user ng-repeat="user in users" score="{{user.score}}" name="{{user.username}}"></user>
 	</div>
 	<div id="equation">
 		<ul id="pieces">

@@ -62,7 +62,7 @@ flash span {
   opacity: 0;
   transition: font-size 0.5s, opacity 0.5s;
   transition-timing-function: linear;
-  top: -200px;
+  top: -100%;
 }
 flash span.error {
   color: red;
@@ -135,6 +135,55 @@ operationlist ul li.multiply:after {
 }
 operationlist ul li.divide:after {
   content: "\00F7";
+}
+
+user {
+  margin: 10px;
+  float: left;
+}
+user:nth-child(1) span.score {
+  color: #00d900;
+}
+user:nth-child(2) span.score {
+  color: #00bf00;
+}
+user:nth-child(3) span.score {
+  color: #00a500;
+}
+user:nth-child(4) span.score {
+  color: #008c00;
+}
+user:nth-child(5) span.score {
+  color: #007200;
+}
+user:nth-child(6) span.score {
+  color: #005900;
+}
+user:nth-child(7) span.score {
+  color: #004000;
+}
+user:nth-child(8) span.score {
+  color: #002600;
+}
+user:nth-child(9) span.score {
+  color: #000c00;
+}
+user:nth-child(10) span.score {
+  color: #000000;
+}
+user span.score {
+  font-size: 36px;
+  background-color: white;
+  padding: 10px 5px;
+  border-radius: 3px;
+  display: block;
+  text-align: center;
+  margin-bottom: 3px;
+  color: black;
+}
+user span.name {
+  display: block;
+  text-align: center;
 }
 
 body {
