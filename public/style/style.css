@@ -43,6 +43,12 @@ card ul li.active {
   color: #8c8e8e;
   opacity: 1;
 }
+card ul li.active:hover {
+  color: #8c8e8e;
+}
+card ul li:hover {
+  color: #a7a8a8;
+}
 card ul li:after {
   width: 100%;
   display: block;
@@ -117,6 +123,12 @@ operationlist ul li {
 operationlist ul li.active {
   color: #8c8e8e;
   opacity: 1;
+}
+operationlist ul li.active:hover {
+  color: #8c8e8e;
+}
+operationlist ul li:hover {
+  color: #a7a8a8;
 }
 operationlist ul li:after {
   width: 100%;
