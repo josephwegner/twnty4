@@ -23,5 +23,15 @@
 		</ul>
 	</div>
 	<flash message="{{flash.message}}" type="{{flash.type}}" timestamp="{{flash.timestamp}}"></flash>
+	<div class="modal" ng-class="{active: userSet === false}">
+		<div class="dialog">
+			<img src="/assets/img/example.png" />
+			<h3>You have four numbers. Get to 24 before anyone else.</h3>
+			<div class="form">
+				<input type="text" name="username" ng-model="username" placeholder="username" /><br>
+				<button ng-click="begin()">Begin</button>
+			</div>
+		</div>
+	</div>
 </body>
 </html>

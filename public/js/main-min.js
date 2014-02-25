@@ -5,14 +5,18 @@ app.controller('Twnty4Ctrl', function($scope) {
 
 	solving = false
 
+	$scope.userSet = false;
+
 	socket = io.connect();
 	socket.on("win", function(data) {
 		solving = false;
 		$scope.$apply(function() {
-			$scope.flash = {
-				type: "success",
-				message: "Nice job!",
-				timestamp: Date.now()
+			if($scope.userSet) {
+				$scope.flash = {
+					type: "success",
+					message: "Nice job!",
+					timestamp: Date.now()
+				}
 			}
 
 			$scope.resetNumbers(data.numbers);
@@ -22,11 +26,14 @@ app.controller('Twnty4Ctrl', function($scope) {
 	socket.on("lose", function(data) {
 		solving = false;
 		$scope.$apply(function() {
-			$scope.flash = {
-				type: "error",
-				message: "You lose!",
-				timestamp: Date.now()
+			if($scope.userSet) {
+				$scope.flash = {
+					type: "error",
+					message: "You lose!",
+					timestamp: Date.now()
+				}
 			}
+
 			$scope.resetNumbers(data.numbers);
 		});
 	});
@@ -63,9 +70,15 @@ app.controller('Twnty4Ctrl', function($scope) {
 		})
 	});
 
-	socket.emit("register", {
-		username: "josephwegner" + Math.floor(Math.random() * 50)
-	});
+	$scope.begin = function() {
+		if(typeof($scope.username) !== "undefined") {
+			socket.emit("register", {
+				username: $scope.username
+			});
+		}
+
+		$scope.userSet = true;
+	}
 
 	$scope.resetNumbers = function(newNumbers) {
 		if(typeof(newNumbers) === "undefined") {
@@ -117,7 +130,7 @@ app.controller('Twnty4Ctrl', function($scope) {
 			}
 		}
 
-		if(currentValue === 24 && solving === false) {
+		if(currentValue === 24 && solving === false && $scope.userSet) {
 			solving = true;
 			socket.emit("solve", {
 				numbers: $scope.selections,
@@ -125,6 +138,10 @@ app.controller('Twnty4Ctrl', function($scope) {
 			});
 		}
 
+		if(Math.round(currentValue) !== currentValue) {
+			return "~"+Math.round(currentValue);
+		}
+		
 		return currentValue;
 	}
 
