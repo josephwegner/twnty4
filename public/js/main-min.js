@@ -3,6 +3,8 @@ var app = angular.module('Twnty4App', []);
 
 app.controller('Twnty4Ctrl', function($scope, $http) {
 	
+	solving = false
+
 	$scope.options = [1,2,5,4];
 	$scope.selections = [
 		$scope.options[0],
@@ -12,6 +14,28 @@ app.controller('Twnty4Ctrl', function($scope, $http) {
 	];
 
 	$scope.operations = ["add", "add", "add"];
+
+	socket = io.connect();
+	socket.on("win", function(data) {
+		alert("you win!");
+		solving = false;
+	});
+	socket.on("lose", function(data) {
+		solving = false;
+	});
+	socket.on("numbers", function(data) {
+		$scope.$apply(function() {
+			$scope.options = data.numbers;
+			$scope.selections = [
+				$scope.options[0],
+				$scope.options[1],
+				$scope.options[2],
+				$scope.options[3]		
+			];
+			$scope.operations = ["add", "add", "add"];
+		});
+		solving = false;
+	});
 
 	$scope.total = function() {
 		var currentValue = false;
@@ -46,6 +70,12 @@ app.controller('Twnty4Ctrl', function($scope, $http) {
 			} else if($scope.selections[i] !== false && currentValue === false) {
 				currentValue = $scope.selections[i];
 			}
+		}
+
+		console.log(currentValue);
+		if(currentValue === 24 && solving === false) {
+			solving = true;
+			socket.emit("solve", {numbers: $scope.selections});
 		}
 
 		return currentValue;

@@ -13,11 +13,15 @@ global.mongoose = require 'mongoose'
 coffee = require 'coffee-script'
 api = require "simple-api"
 global.querystring = require 'querystring'
+io = require 'socket.io'
 
 #Simple API doesn't currently have it's own built-in idea of models, so we have to mock them here.
 #Mock them simply manually requiring the file
 require "#{__dirname}/api/v0/models/object.coffee"
+
+#Load our libraries
 serveStatic = require "#{__dirname}/lib/staticFiles.coffee"
+Game = require "#{__dirname}/lib/game.coffee"
 
 console.log "All Modules Loaded"
 console.log "Building #{configs.name} Server in #{process.env.application_env} environment"
@@ -61,8 +65,11 @@ mongoose.connect configs.mongoURL, (err) ->
 				else
 					#Default, serve layout
 					res.end layoutHTML, 'utf8'
+
+		socket = io.listen v0.app
+		game = new Game socket
 	
-		v0.Controller "men", require("#{__dirname}/api/v0/controllers/object.coffee")
+		#v0.Controller "men", require("#{__dirname}/api/v0/controllers/object.coffee")
 	
 		console.log "App listening on #{configs.url}"
 
