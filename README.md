@@ -1,6 +1,6 @@
-WD Boilerplate
+Twnty4
 ============
-This is Joe Wegner's boilerplate Angular/Node/API web development boilerplate
+A real-time multiplayer online version of the popular math game, [24](http://en.wikipedia.org/wiki/24_Game).
 
 Technology
 ----------
