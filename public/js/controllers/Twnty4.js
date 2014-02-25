@@ -2,37 +2,58 @@ app.controller('Twnty4Ctrl', function($scope, $http) {
 	
 	solving = false
 
-	$scope.options = [1,2,5,4];
-	$scope.selections = [
-		$scope.options[0],
-		$scope.options[1],
-		$scope.options[2],
-		$scope.options[3]
-	];
-
-	$scope.operations = ["add", "add", "add"];
-
 	socket = io.connect();
 	socket.on("win", function(data) {
-		alert("you win!");
 		solving = false;
+		$scope.$apply(function() {
+			$scope.flash = {
+				type: "success",
+				message: "Nice job!",
+				timestamp: Date.now()
+			}
+
+			$scope.resetNumbers(data.numbers);
+		});
+
 	});
 	socket.on("lose", function(data) {
 		solving = false;
+		$scope.$apply(function() {
+			$scope.flash = {
+				type: "error",
+				message: "You lose!",
+				timestamp: Date.now()
+			}
+			$scope.resetNumbers(data.numbers);
+		});
 	});
 	socket.on("numbers", function(data) {
 		$scope.$apply(function() {
-			$scope.options = data.numbers;
-			$scope.selections = [
-				$scope.options[0],
-				$scope.options[1],
-				$scope.options[2],
-				$scope.options[3]		
-			];
-			$scope.operations = ["add", "add", "add"];
+			$scope.resetNumbers(data.numbers);
 		});
 		solving = false;
 	});
+	socket.on("cheater", function(data) {
+		for(var i=0,max=data.messages.length; i<max; i++) {
+			alert(data.messages[i]);
+		}
+	})
+
+	$scope.resetNumbers = function(newNumbers) {
+		if(typeof(newNumbers) === "undefined") {
+			newNumbers = [1,2,3,4];
+		}
+
+		$scope.options = newNumbers;
+		$scope.selections = [
+			$scope.options[0],
+			$scope.options[1],
+			$scope.options[2],
+			$scope.options[3]		
+		];
+		$scope.operations = ["add", "add", "add"];
+		console.log($scope.options);
+	}
 
 	$scope.total = function() {
 		var currentValue = false;
@@ -60,7 +81,7 @@ app.controller('Twnty4Ctrl', function($scope, $http) {
 						break;
 
 					case "divide":
-						currentValue += currentValue / $scope.selections[i + 1];
+						currentValue = currentValue / $scope.selections[i + 1];
 
 						break;
 				}
@@ -69,13 +90,17 @@ app.controller('Twnty4Ctrl', function($scope, $http) {
 			}
 		}
 
-		console.log(currentValue);
 		if(currentValue === 24 && solving === false) {
 			solving = true;
-			socket.emit("solve", {numbers: $scope.selections});
+			socket.emit("solve", {
+				numbers: $scope.selections,
+				operations: $scope.operations
+			});
 		}
 
 		return currentValue;
 	}
+
+	$scope.resetNumbers();
 
 });

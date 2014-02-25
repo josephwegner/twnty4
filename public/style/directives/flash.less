@@ -1,0 +1,37 @@
+flash {
+	span {
+		position: absolute;
+		height: 100%;
+		width: 100%;
+		font-size: 72px;
+		text-align: center;
+		opacity: 0;
+		transition: font-size .5s, opacity .5s;
+		transition-timing-function: linear;
+		top: -200px;
+
+		&.error {
+			color: red;
+		}
+
+		&.success {
+			color: green;
+		}
+	}
+
+	&.phase1 {
+		span {
+			font-size: 108px;
+			opacity: 1;
+			top: 200px;
+		}	
+	}
+
+	&.phase2 {
+		span {
+			font-size: 146px;
+			opacity: 0;
+			top: 200px;
+		}	
+	}
+}

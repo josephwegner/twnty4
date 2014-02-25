@@ -16,9 +16,14 @@ class Game
 		@clients.push client
 
 		client.on "solve", (data) =>
-			if data.numbers? && data.numbers.sort?()
-				if @doNumbersMatch data.numbers
-					console.log "Numbers match!"
+			if data.numbers? && data.numbers.sort?
+				if !@doNumbersMatch data.numbers
+					client.emit "cheater", 
+						messages: ["YOU ARE AN IDIOT", "HAHAHAHAHAHA"]
+				else if !@doNumbersAddUp data.numbers, data.operations
+					client.emit "cheater",
+						messages: ["YOU SUCK AT MATH", "GTFO", "NO ONE WANTS YOU HERE"]
+				else
 					@numbers = @getNewNumbers()
 					client.broadcast.emit "lose", 
 						numbers: @numbers
@@ -26,7 +31,7 @@ class Game
 						numbers: @numbers
 
 		client.on "getNumbers", () =>
-			client.emit "numbers"
+			client.emit "numbers" 
 				numbers: @numbers
 
 	getNewNumbers: () ->
@@ -50,5 +55,32 @@ class Game
 			return false if @numbers.indexOf(num) == -1 && num != false
 
 		true
+
+	doNumbersAddUp: (numbers, operations) ->
+		console.log numbers, operations
+		currentValue = false;
+
+		for number, index in numbers[..-2]
+			if numbers[index + 1] != false
+				if currentValue == false
+					currentValue = number
+
+				switch operations[index]
+					when "add"
+						currentValue += numbers[index + 1]
+
+					when "subtract"
+						currentValue -= numbers[index + 1]
+
+					when "multiply"
+						currentValue = currentValue * numbers[index + 1]
+
+					when "divide"
+						currentValue = currentValue / numbers[index + 1]
+				
+			else if number != false && currentValue == false
+				currentValue = number
+
+		return currentValue == 24;
 
 module.exports = Game

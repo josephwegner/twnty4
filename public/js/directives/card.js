@@ -30,6 +30,16 @@ app.directive("card", function() {
 				$rootScope.$broadcast("card_updated", selected, previousSelectedIndex, $element);
 			}
 
+			$scope.$watch("options", function() {
+				$scope.selectedIndex = -1;
+				for(var i=0,max=$scope.options.length; i<max; i++) {
+					if($scope.options[i] == $scope.selection) {
+						$scope.selectedIndex = i;
+						break;
+					}
+				}
+			});
+
 			$scope.$on("card_updated", function(ev, selected, previous, element) {
 				if(element !== $element && selected === $scope.selectedIndex && selected < $scope.options.length) {
 					if(previous >= $scope.options.length) {
