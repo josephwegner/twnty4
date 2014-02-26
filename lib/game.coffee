@@ -31,7 +31,7 @@ class Game
 
 		client.on "disconnect", () =>
 			delete @clients[client.id]
-			@sendUserUpdates
+			@sendUserUpdates()
 
 
 		client.on "register", (data) =>

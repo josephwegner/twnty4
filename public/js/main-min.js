@@ -45,7 +45,7 @@ app.controller('Twnty4Ctrl', function($scope) {
 	});
 	socket.on("cheater", function(data) {
 		for(var i=0,max=data.messages.length; i<max; i++) {
-			alert(data.messages[i]);
+			//alert(data.messages[i]);
 		}
 	});
 	socket.on('users', function(data) {
@@ -141,7 +141,7 @@ app.controller('Twnty4Ctrl', function($scope) {
 		if(Math.round(currentValue) !== currentValue) {
 			return "~"+Math.round(currentValue);
 		}
-		
+
 		return currentValue;
 	}
 
