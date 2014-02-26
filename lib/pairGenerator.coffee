@@ -42,6 +42,10 @@ for firstNum in nums
 					if testPair[0] == testPair[1]
 						continue
 
+				#If all the numbers add up to 24, it will be an auto-win for everyone..  which is bad
+				if (firstNum + secondNum + thirdNum + fourthNum) == 24
+					continue
+
 				success = false
 
 				for firstOp in ops
