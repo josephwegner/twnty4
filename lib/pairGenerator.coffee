@@ -18,7 +18,7 @@ doNumbersAddUp = (numbers, operations) ->
 
 	return currentValue == 24;
 
-nums = [0..9]
+nums = [1..9]
 ops = ["add", "subtract", "multiply", "divide"]
 successfulPairs = []
 for firstNum in nums
@@ -26,6 +26,22 @@ for firstNum in nums
 		for thirdNum in nums
 			for fourthNum in nums
 				pair = [firstNum, secondNum, thirdNum, fourthNum]
+
+				#Pairs with either 8&3 or 6&4 and two other matching numbers are lame, cause you just
+				#do 8*3+7-7...  lame-o
+				if pair.indexOf(8) != -1 && pair.indexOf(3) != -1
+					testPair = pair.slice()
+					testPair.splice testPair.indexOf(3), 1
+					testPair.splice testPair.indexOf(8), 1
+					if testPair[0] == testPair[1]
+						continue
+				if pair.indexOf(6) != -1 && pair.indexOf(4) != -1
+					testPair = pair.slice()
+					testPair.splice testPair.indexOf(4), 1
+					testPair.splice testPair.indexOf(6), 1
+					if testPair[0] == testPair[1]
+						continue
+
 				success = false
 
 				for firstOp in ops
