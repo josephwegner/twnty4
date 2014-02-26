@@ -1,5 +1,6 @@
 class Game
 	constructor: (@socket) ->
+		@possiblePairs = require "./pairGenerator.coffee"
 		@clients = {}
 		@numbers = @getNewNumbers()
 		console.log "Numbers are:", @numbers
@@ -65,51 +66,38 @@ class Game
 				users: cleanUserInfo
 
 	getNewNumbers: () ->
-		numbers = "123456789".split ""
-		selected = []
-
-		count = 0
-		while count < 4
-			selected.push parseInt (numbers.splice Math.floor((Math.random() * (9 - count))), 1)[0]
-			count++
-
-		selected
+		@possiblePairs[Math.floor(Math.random() * @possiblePairs.length)]
 
 	getCurrentNumbers: () ->
 		@numbers
 
 	doNumbersMatch: (test) ->
-		console.log test, @numbers
-		for num in test
-			console.log "failed on ", num if @numbers.indexOf(num) == -1 && num != false
-			return false if @numbers.indexOf(num) == -1 && num != false
+		scopedNumbers = @numbers.slice()
+		scopedNumbers.sort()
+		scopedTest = test.slice()
+		scopedTest.sort()
+		for num, index in scopedTest
+			return false if scopedNumbers[index] != num
 
 		true
 
 	doNumbersAddUp: (numbers, operations) ->
-		console.log numbers, operations
-		currentValue = false;
+		currentValue = numbers[0]
 
 		for number, index in numbers[..-2]
-			if numbers[index + 1] != false
-				if currentValue == false
-					currentValue = number
 
-				switch operations[index]
-					when "add"
-						currentValue += numbers[index + 1]
+			switch operations[index]
+				when "add"
+					currentValue += numbers[index + 1]
 
-					when "subtract"
-						currentValue -= numbers[index + 1]
+				when "subtract"
+					currentValue -= numbers[index + 1]
 
-					when "multiply"
-						currentValue = currentValue * numbers[index + 1]
+				when "multiply"
+					currentValue = currentValue * numbers[index + 1]
 
-					when "divide"
-						currentValue = currentValue / numbers[index + 1]
-				
-			else if number != false && currentValue == false
-				currentValue = number
+				when "divide"
+					currentValue = currentValue / numbers[index + 1]
 
 		return currentValue == 24;
 

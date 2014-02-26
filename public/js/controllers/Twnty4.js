@@ -83,54 +83,47 @@ app.controller('Twnty4Ctrl', function($scope) {
 		}
 
 		$scope.options = newNumbers;
-		$scope.selections = [
-			$scope.options[0],
-			$scope.options[1],
-			$scope.options[2],
-			$scope.options[3]		
-		];
+		$scope.selections = [0, 1, 2, 3];
 		$scope.operations = ["add", "add", "add"];
 	}
 
 	$scope.total = function() {
-		var currentValue = false;
+		var currentValue = $scope.options[$scope.selections[0]];
 
 		for(var i=0,max=$scope.options.length - 1; i<max; i++) {
-			if($scope.selections[i + 1] !== false) {
-				if(currentValue === false) {
-					currentValue = $scope.selections[i];
-				}
+			switch($scope.operations[i]) {
+				case "add":
+					currentValue += $scope.options[$scope.selections[i + 1]];
 
-				switch($scope.operations[i]) {
-					case "add":
-						currentValue += $scope.selections[i + 1];
+					break;
 
-						break;
+				case "subtract":
+					currentValue -= $scope.options[$scope.selections[i + 1]];
 
-					case "subtract":
-						currentValue -= $scope.selections[i + 1];
+					break;
 
-						break;
+				case "multiply":
+					currentValue = currentValue * $scope.options[$scope.selections[i + 1]];
 
-					case "multiply":
-						currentValue = currentValue * $scope.selections[i + 1];
+					break;
 
-						break;
+				case "divide":
+					currentValue = currentValue / $scope.options[$scope.selections[i + 1]];
 
-					case "divide":
-						currentValue = currentValue / $scope.selections[i + 1];
-
-						break;
-				}
-			} else if($scope.selections[i] !== false && currentValue === false) {
-				currentValue = $scope.selections[i];
+					break;
 			}
 		}
 
 		if(currentValue === 24 && solving === false && $scope.userSet) {
 			solving = true;
+
+			numbers = [];
+			for(var i=0; i<$scope.options.length; i++) {
+				numbers.push($scope.options[$scope.selections[i]]);
+			}
+
 			socket.emit("solve", {
-				numbers: $scope.selections,
+				numbers: numbers,
 				operations: $scope.operations
 			});
 		}

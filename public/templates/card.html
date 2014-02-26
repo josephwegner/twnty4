@@ -1,4 +1,3 @@
-<ul class="card-list selected{{selectedIndex}}">
-	<li ng-repeat="value in options" ng-class="{active: selection == value}" ng-click="clicked($index)"><span>{{value}}</span></li>
-	<li ng-class="{active: selection == false}" ng-click="clicked(options.length)"><span>&#9587</span></li>
+<ul class="card-list selected{{selectedindex}}">
+	<li ng-repeat="value in options track by $index" ng-class="{active: selectedindex == $index}" ng-click="clicked($index)"><span>{{value}}</span></li>
 </ul>

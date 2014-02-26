@@ -86,54 +86,47 @@ app.controller('Twnty4Ctrl', function($scope) {
 		}
 
 		$scope.options = newNumbers;
-		$scope.selections = [
-			$scope.options[0],
-			$scope.options[1],
-			$scope.options[2],
-			$scope.options[3]		
-		];
+		$scope.selections = [0, 1, 2, 3];
 		$scope.operations = ["add", "add", "add"];
 	}
 
 	$scope.total = function() {
-		var currentValue = false;
+		var currentValue = $scope.options[$scope.selections[0]];
 
 		for(var i=0,max=$scope.options.length - 1; i<max; i++) {
-			if($scope.selections[i + 1] !== false) {
-				if(currentValue === false) {
-					currentValue = $scope.selections[i];
-				}
+			switch($scope.operations[i]) {
+				case "add":
+					currentValue += $scope.options[$scope.selections[i + 1]];
 
-				switch($scope.operations[i]) {
-					case "add":
-						currentValue += $scope.selections[i + 1];
+					break;
 
-						break;
+				case "subtract":
+					currentValue -= $scope.options[$scope.selections[i + 1]];
 
-					case "subtract":
-						currentValue -= $scope.selections[i + 1];
+					break;
 
-						break;
+				case "multiply":
+					currentValue = currentValue * $scope.options[$scope.selections[i + 1]];
 
-					case "multiply":
-						currentValue = currentValue * $scope.selections[i + 1];
+					break;
 
-						break;
+				case "divide":
+					currentValue = currentValue / $scope.options[$scope.selections[i + 1]];
 
-					case "divide":
-						currentValue = currentValue / $scope.selections[i + 1];
-
-						break;
-				}
-			} else if($scope.selections[i] !== false && currentValue === false) {
-				currentValue = $scope.selections[i];
+					break;
 			}
 		}
 
 		if(currentValue === 24 && solving === false && $scope.userSet) {
 			solving = true;
+
+			numbers = [];
+			for(var i=0; i<$scope.options.length; i++) {
+				numbers.push($scope.options[$scope.selections[i]]);
+			}
+
 			socket.emit("solve", {
-				numbers: $scope.selections,
+				numbers: numbers,
 				operations: $scope.operations
 			});
 		}
@@ -154,51 +147,30 @@ app.directive("card", function() {
 		templateUrl: "/assets/templates/card.html",
 		scope: {
 			options: "=options",
-			selection: "=selection"
+			selectedindex: "=selectedindex"
 		},
 		link: function(scope, element, attrs) {
-
-			scope.selectedIndex = -1;
-			for(var i=0,max=scope.options.length; i<max; i++) {
-				if(scope.options[i] == scope.selection) {
-					scope.selectedIndex = i;
-					break;
-				}
-			}
+			scope.selection = scope.options[scope.selectedindex];
 		},
 		controller: function($scope, $element, $attrs, $rootScope) {
 			$scope.clicked = function(selected) {
-				if(selected >= $scope.options.length) {
-					$scope.selection = false;
-				} else {
-					$scope.selection = $scope.options[selected];
-				}
 
-				var previousSelectedIndex = $scope.selectedIndex;
-				$scope.selectedIndex = selected;
+				$scope.selection = $scope.options[selected];
+
+				var previousSelectedIndex = $scope.selectedindex;
+				$scope.selectedindex = selected;
 
 				$rootScope.$broadcast("card_updated", selected, previousSelectedIndex, $element);
 			}
 
 			$scope.$watch("options", function() {
-				$scope.selectedIndex = -1;
-				for(var i=0,max=$scope.options.length; i<max; i++) {
-					if($scope.options[i] == $scope.selection) {
-						$scope.selectedIndex = i;
-						break;
-					}
-				}
+				$scope.selection = $scope.options[$scope.selectedindex];
 			});
 
 			$scope.$on("card_updated", function(ev, selected, previous, element) {
-				if(element !== $element && selected === $scope.selectedIndex && selected < $scope.options.length) {
-					if(previous >= $scope.options.length) {
-						$scope.selection = false;
-					} else {
-						$scope.selection = $scope.options[previous];
-					}
-
-					$scope.selectedIndex = previous;
+				if(element !== $element && selected === $scope.selectedindex && selected < $scope.options.length) {
+					$scope.selection = $scope.options[previous];
+					$scope.selectedindex = previous;
 				}
 			});
 		}
