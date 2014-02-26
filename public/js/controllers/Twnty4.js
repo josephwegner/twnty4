@@ -26,7 +26,7 @@ app.controller('Twnty4Ctrl', function($scope) {
 			if($scope.userSet) {
 				$scope.flash = {
 					type: "error",
-					message: "You lose!",
+					message: "You lose... Try again!",
 					timestamp: Date.now()
 				}
 			}
