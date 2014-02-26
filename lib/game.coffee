@@ -58,8 +58,8 @@ class Game
 			clearTimeout @timeout
 
 		@timeout = setTimeout () =>
-			@newGame
-		, 10000
+			@newGame()
+		, 120000
 
 		if send
 			@socket.sockets.emit "numbers",

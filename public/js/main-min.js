@@ -39,6 +39,14 @@ app.controller('Twnty4Ctrl', function($scope) {
 	});
 	socket.on("numbers", function(data) {
 		$scope.$apply(function() {
+			if($scope.userSet && data.message) {
+				$scope.flash = {
+					type: "error",
+					message: data.message,
+					timestamp: Date.now()
+				}
+			}
+
 			$scope.resetNumbers(data.numbers);
 		});
 		solving = false;
