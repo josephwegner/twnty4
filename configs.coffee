@@ -15,4 +15,11 @@ switch process.env.application_env
 		configs.url = "http://localhost:3333"
 		configs.cache = false
 
+	when "production"
+		configs.cache = true
+		configs.mongoURL = process.env.MONGOLAB_URI
+		configs.port = process.env.PORT or 3333
+		configs.url = "http://twnty4.herokuapp.com"
+		configs.host = null
+
 module.exports = exports = configs
