@@ -29,6 +29,9 @@ class Game
 					@clients[client.id].score++
 					@sendUserUpdates()
 
+		client.on "disconnect", () =>
+			delete @clients[client.id]
+
 
 		client.on "register", (data) =>
 			if !@clients[client.id]? && data.username?
