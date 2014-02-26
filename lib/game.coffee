@@ -2,7 +2,7 @@ class Game
 	constructor: (@socket) ->
 		@possiblePairs = require "./pairGenerator.coffee"
 		@clients = {}
-		@numbers = @getNewNumbers()
+		@newGame(false)
 		console.log "Numbers are:", @numbers
 		@bindSocket()
 
@@ -21,7 +21,7 @@ class Game
 					client.emit "cheater",
 						messages: ["YOU SUCK AT MATH", "GTFO", "NO ONE WANTS YOU HERE"]
 				else
-					@numbers = @getNewNumbers()
+					@newGame(false)
 					client.broadcast.emit "lose", 
 						numbers: @numbers
 					client.emit "win",
@@ -49,6 +49,22 @@ class Game
 		client.on "getNumbers", () =>
 			client.emit "numbers" 
 				numbers: @numbers
+
+	newGame: (send = true) ->
+		@numbers = @getNewNumbers()
+
+
+		if typeof(@timeout) != "undefined"
+			clearTimeout @timeout
+
+		@timeout = setTimeout () =>
+			@newGame
+		, 10000
+
+		if send
+			@socket.sockets.emit "numbers",
+				numbers: @numbers
+				message: "Too slow!"
 
 	sendUserUpdates: (client) ->
 		console.log "sending clients", @clients
