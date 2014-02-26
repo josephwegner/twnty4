@@ -1,10 +1,10 @@
 class Game
-	constructor: (@socket) ->
+	constructor: (@socket = false) ->
 		@possiblePairs = require "./pairGenerator.coffee"
 		@clients = {}
 		@newGame(false)
 		console.log "Numbers are:", @numbers
-		@bindSocket()
+		@bindSocket() if @socket
 
 	bindSocket: () ->
 		@socket.on "connection", (client) =>
@@ -13,22 +13,8 @@ class Game
 
 	addClient: (client) ->
 		client.on "solve", (data) =>
-			if data.numbers? && data.numbers.sort?
-				if !@doNumbersMatch data.numbers
-					client.emit "cheater", 
-						messages: ["YOU ARE AN IDIOT", "HAHAHAHAHAHA"]
-				else if !@doNumbersAddUp data.numbers, data.operations
-					client.emit "cheater",
-						messages: ["YOU SUCK AT MATH", "GTFO", "NO ONE WANTS YOU HERE"]
-				else
-					@newGame(false)
-					client.broadcast.emit "lose", 
-						numbers: @numbers
-					client.emit "win",
-						numbers: @numbers
+			@solve client, data
 
-					@clients[client.id].score++
-					@sendUserUpdates()
 
 		client.on "disconnect", () =>
 			delete @clients[client.id]
@@ -36,7 +22,10 @@ class Game
 
 
 		client.on "register", (data) =>
-			if !@clients[client.id]? && data.username?
+			@register client, data
+
+	register: (client, data) ->
+		if !@clients[client.id]? && data.username?
 				@clients[client.id] =
 					username: data.username
 					score: 0
@@ -47,8 +36,26 @@ class Game
 			@sendUserUpdates()
 
 		client.on "getNumbers", () =>
-			client.emit "numbers" 
+			client.emit "numbers", 
 				numbers: @numbers
+
+	solve: (client, data) ->
+		if data.numbers? && data.operations? && data.operations.sort? && data.numbers.sort?
+			if !@doNumbersMatch data.numbers
+				client.emit "cheater", 
+					messages: ["YOU ARE AN IDIOT", "HAHAHAHAHAHA"]
+			else if !@doNumbersAddUp data.numbers, data.operations
+				client.emit "cheater",
+					messages: ["YOU SUCK AT MATH", "GTFO", "NO ONE WANTS YOU HERE"]
+			else
+				@newGame(false)
+				client.broadcast.emit "lose", 
+					numbers: @numbers
+				client.emit "win",
+					numbers: @numbers
+
+				@clients[client.id].score++
+				@sendUserUpdates()
 
 	newGame: (send = true) ->
 		@numbers = @getNewNumbers()
@@ -67,7 +74,6 @@ class Game
 				message: "Too slow!"
 
 	sendUserUpdates: (client) ->
-		console.log "sending clients", @clients
 		cleanUserInfo = []
 		for id, user of @clients
 			cleanUserInfo.push 
