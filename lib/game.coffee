@@ -31,6 +31,7 @@ class Game
 
 		client.on "disconnect", () =>
 			delete @clients[client.id]
+			@sendUserUpdates
 
 
 		client.on "register", (data) =>
@@ -42,7 +43,7 @@ class Game
 			client.emit "numbers", 
 				numbers: @numbers
 
-			@sendUserUpdates(client)
+			@sendUserUpdates()
 
 		client.on "getNumbers", () =>
 			client.emit "numbers" 
