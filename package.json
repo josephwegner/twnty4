@@ -1,6 +1,6 @@
 {
-  "name": "WD-Boilerplate",
-  "description": "Joe Wegner's Web Development Boilerplate",
+  "name": "Twnty4",
+  "description": "Play the game 24 online!",
   "version": "0.0.1",
   "private": true,
   "dependencies": {

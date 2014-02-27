@@ -3,7 +3,7 @@ if not process.env?.application_env
 	process.env.application_env = "local"
 
 configs = {
-	name: "WD Boilerplate"
+	name: "Twnty4"
 }
 
 
