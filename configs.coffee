@@ -9,7 +9,6 @@ configs = {
 
 switch process.env.application_env
 	when "local"
-		configs.mongoURL = "mongodb://localhost/wdbootstrapdb"
 		configs.host = "localhost"
 		configs.port = "3333"
 		configs.url = "http://localhost:3333"
@@ -20,9 +19,8 @@ switch process.env.application_env
 
 	when "production"
 		configs.cache = true
-		configs.mongoURL = process.env.MONGOLAB_URI
 		configs.port = process.env.PORT or 3333
-		configs.url = "http://twnty4.herokuapp.com"
+		configs.url = "http://twnty4.wegnerdesign.com"
 		configs.host = null
 		configs.keen = 
 			projectId: process.env.KEEN_PROJECT

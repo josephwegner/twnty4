@@ -5,19 +5,12 @@
 # Module dependencies.
 global.configs = require "./configs.coffee"
 global.http = require "http"
-global.https = require "https"
 global.path = require "path"
 global.url = require 'url'
 global.fs = require 'fs'
-global.mongoose = require 'mongoose'
 coffee = require 'coffee-script'
-api = require "simple-api"
 global.querystring = require 'querystring'
 io = require 'socket.io'
-
-#Simple API doesn't currently have it's own built-in idea of models, so we have to mock them here.
-#Mock them simply manually requiring the file
-require "#{__dirname}/api/v0/models/object.coffee"
 
 #Load our libraries
 serveStatic = require "#{__dirname}/lib/staticFiles.coffee"
@@ -28,52 +21,42 @@ global.analytics = new Analytics configs.keen.projectId, configs.keen.writeKey
 console.log "All Modules Loaded"
 console.log "Building #{configs.name} Server in #{process.env.application_env} environment"
 
-mongoose.connect configs.mongoURL, (err) ->
-	
-	console.log err if err
-	return false if err
-	
-	fs.readFile path.join(__dirname, "views", "index.html"), (err, layoutHTML) ->
-		if err
-			console.log "Error reading layout HTML"
-			return false
-	
-		console.log "starting simple api with host #{configs.host} and port #{configs.port}"
-		v0 = new api
-			prefix: ["api", "v0"]
-			port: configs.port
-			host: configs.host
-			logLevel: 4
-			fallback: (req, res) ->
-	
-				urlParts = url.parse req.url, yes
-	
-				#depends on Joe Wegner's node-session
-				#req.$session = session.start res, req
-	
-				if urlParts.pathname.indexOf("/assets") is 0
-					#Attempting to grab static assets.  Do that
-					serveStatic req, res
+fs.readFile path.join(__dirname, "views", "index.html"), (err, layoutHTML) ->
+	if err
+		console.log "Error reading layout HTML"
+		return false
 
-				else if urlParts.pathname == "/favicon.ico"
-					fs.readFile path.join(__dirname, "public", "favicon.ico"), (err, favicon) ->
-						if err
-							res.statusCode = 404
-							res.end()
+	console.log "starting twnty4 with host #{configs.host} and port #{configs.port}"
 
-						else
-							res.end favicon
-	
+	app = http.createServer (req, res) ->
+		urlParts = url.parse req.url, yes
+			
+		#depends on Joe Wegner's node-session
+		#req.$session = session.start res, req
+
+		if urlParts.pathname.indexOf("/assets") is 0
+			#Attempting to grab static assets.  Do that
+			serveStatic req, res
+
+		else if urlParts.pathname == "/favicon.ico"
+			fs.readFile path.join(__dirname, "public", "favicon.ico"), (err, favicon) ->
+				if err
+					res.statusCode = 404
+					res.end()
+
 				else
-					#Default, serve layout
-					res.end layoutHTML, 'utf8'
+					res.end favicon
 
-		socket = io.listen v0.app
-		game = new Game socket
-	
-		#v0.Controller "men", require("#{__dirname}/api/v0/controllers/object.coffee")
-	
-		console.log "App listening on #{configs.url}"
+		else
+			#Default, serve layout
+			res.end layoutHTML, 'utf8'
 
-mongoose.connection.on 'error', (err) ->
-	console.log "Mongoose Error", err
+	app.listen configs.port, configs.host
+
+	socket = io.listen app
+	game = new Game socket
+
+	console.log "App listening on #{configs.url}"
+
+
+
