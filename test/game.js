@@ -1,5 +1,7 @@
 //Necessary Libs
 require("coffee-script/register")
+var Analytics = require("../lib/analytics.coffee");
+global.analytics = new Analytics();
 
 //Mocha Setup
 var assert = require('assert');
