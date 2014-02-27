@@ -80,9 +80,8 @@ app.controller('Twnty4Ctrl', function($scope) {
 			socket.emit("register", {
 				username: $scope.username
 			});
+			$scope.userSet = true;
 		}
-
-		$scope.userSet = true;
 	}
 
 	$scope.resetNumbers = function(newNumbers) {
