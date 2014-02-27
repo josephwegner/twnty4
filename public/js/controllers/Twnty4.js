@@ -76,7 +76,7 @@ app.controller('Twnty4Ctrl', function($scope) {
 	});
 
 	$scope.begin = function() {
-		if(typeof($scope.username) !== "undefined") {
+		if(typeof($scope.username) !== "undefined" && $scope.username !== "") {
 			socket.emit("register", {
 				username: $scope.username
 			});
