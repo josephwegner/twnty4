@@ -204,7 +204,6 @@ body {
   margin: 0;
 }
 #header {
-  height: 100px;
   background-color: grey;
   overflow-x: scroll;
   overflow-y: hidden;
