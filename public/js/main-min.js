@@ -29,7 +29,7 @@ app.controller('Twnty4Ctrl', function($scope) {
 			if($scope.userSet) {
 				$scope.flash = {
 					type: "error",
-					message: "You lose... Try again!",
+					message: "You lose!",
 					timestamp: Date.now()
 				}
 			}
@@ -79,13 +79,12 @@ app.controller('Twnty4Ctrl', function($scope) {
 	});
 
 	$scope.begin = function() {
-		if(typeof($scope.username) !== "undefined") {
+		if(typeof($scope.username) !== "undefined" && $scope.username !== "") {
 			socket.emit("register", {
 				username: $scope.username
 			});
+			$scope.userSet = true;
 		}
-
-		$scope.userSet = true;
 	}
 
 	$scope.resetNumbers = function(newNumbers) {
