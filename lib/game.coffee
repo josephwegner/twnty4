@@ -23,7 +23,7 @@ class Game
 					duration: Date.now() - @clients[client.id].start_time
 					start_time: @clients[client.id].start_time
 					score: @clients[client.id].score
-					user_count: @clients.length
+					user_count: Object.keys(@clients).length
 
 				delete @clients[client.id]
 				@sendUserUpdates()
@@ -42,7 +42,7 @@ class Game
 				analytics.track "register", 
 					username: data.username
 					id: client.id
-					user_count: @clients.length
+					user_count: Object.keys(@clients).length
 
 			client.emit "numbers", 
 				numbers: @numbers
@@ -75,7 +75,7 @@ class Game
 					gameStart: @gameStart
 					user_id: client.id
 					user_score: @clients[client.id].score
-					user_count: @clients.length
+					user_count: Object.keys(@clients).length
 
 				@newGame(false)
 				client.broadcast.emit "lose", 
@@ -97,7 +97,7 @@ class Game
 		@timeout = setTimeout () =>
 			analytics.track "timeout",
 				numbers: @numbers
-				user_count: @clients.length
+				user_count: Object.keys(@clients).length
 
 			@newGame()
 		, 120000
