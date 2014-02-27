@@ -7,7 +7,8 @@
     "coffee-script": "1.7.1",
     "simple-api": "~0.0",
     "mongoose": "~3.5",
-    "socket.io": "~0.9.16"
+    "socket.io": "~0.9.16",
+    "keen.io": "0.0.4"
   },
   "devDependencies": {
     "grunt-contrib-less": "~0.9",
@@ -15,7 +16,6 @@
     "grunt-contrib-concat": "~0.3",
     "mocha": "~1.17",
     "sinon": "~1.8"
-
   },
   "engines": {
     "node": "0.10.x",

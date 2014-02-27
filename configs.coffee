@@ -14,6 +14,9 @@ switch process.env.application_env
 		configs.port = "3333"
 		configs.url = "http://localhost:3333"
 		configs.cache = false
+		configs.keen = 
+			projectId: process.env.KEEN_PROJECT
+			writeKey: process.env.KEEN_WRITE_KEY
 
 	when "production"
 		configs.cache = true
@@ -21,5 +24,8 @@ switch process.env.application_env
 		configs.port = process.env.PORT or 3333
 		configs.url = "http://twnty4.herokuapp.com"
 		configs.host = null
+		configs.keen = 
+			projectId: process.env.KEEN_PROJECT
+			writeKey: process.env.KEEN_WRITE_KEY
 
 module.exports = exports = configs

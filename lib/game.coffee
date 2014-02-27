@@ -17,8 +17,16 @@ class Game
 
 
 		client.on "disconnect", () =>
-			delete @clients[client.id]
-			@sendUserUpdates()
+			if @clients[client.id]
+				analytics.track "disconnect",
+					user_id: client.id
+					duration: Date.now() - @clients[client.id].start_time
+					start_time: @clients[client.id].start_time
+					score: @clients[client.id].score
+					user_count: @clients.length
+
+				delete @clients[client.id]
+				@sendUserUpdates()
 
 
 		client.on "register", (data) =>
@@ -29,6 +37,12 @@ class Game
 				@clients[client.id] =
 					username: data.username
 					score: 0
+					start_time: Date.now()
+
+				analytics.track "register", 
+					username: data.username
+					id: client.id
+					user_count: @clients.length
 
 			client.emit "numbers", 
 				numbers: @numbers
@@ -44,10 +58,25 @@ class Game
 			if !@doNumbersMatch data.numbers
 				client.emit "cheater", 
 					messages: ["YOU ARE AN IDIOT", "HAHAHAHAHAHA"]
+					analytics.track "cheat",
+						user_id: client.id
+						type: "incorrect numbers"
 			else if !@doNumbersAddUp data.numbers, data.operations
 				client.emit "cheater",
 					messages: ["YOU SUCK AT MATH", "GTFO", "NO ONE WANTS YOU HERE"]
+					analytics.track "cheat",
+						user_id: client.id
+						type: "incorrect operations"
 			else
+				analytics.track "win",
+					numbers: data.numbers,
+					operations: data.operations,
+					gameDuration: Date.now() - @gameStart
+					gameStart: @gameStart
+					user_id: client.id
+					user_score: @clients[client.id].score
+					user_count: @clients.length
+
 				@newGame(false)
 				client.broadcast.emit "lose", 
 					numbers: @numbers
@@ -59,12 +88,17 @@ class Game
 
 	newGame: (send = true) ->
 		@numbers = @getNewNumbers()
+		@gameStart = Date.now()
 
 
 		if typeof(@timeout) != "undefined"
 			clearTimeout @timeout
 
 		@timeout = setTimeout () =>
+			analytics.track "timeout",
+				numbers: @numbers
+				user_count: @clients.length
+
 			@newGame()
 		, 120000
 

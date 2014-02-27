@@ -22,6 +22,8 @@ require "#{__dirname}/api/v0/models/object.coffee"
 #Load our libraries
 serveStatic = require "#{__dirname}/lib/staticFiles.coffee"
 Game = require "#{__dirname}/lib/game.coffee"
+Analytics = require "#{__dirname}/lib/analytics.coffee"
+global.analytics = new Analytics configs.keen.projectId, configs.keen.writeKey
 
 console.log "All Modules Loaded"
 console.log "Building #{configs.name} Server in #{process.env.application_env} environment"
